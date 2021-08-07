@@ -6,4 +6,4 @@
 4. kubectl.exe get pod -n kubedoom
 5. kubectl.exe port-forward <pod-name> <local-port>:5900 -n kubedoom
 6. vncviewer viewer localhost:<local-port>
-  6.1 pass- idbehold
+6.1 pass- idbehold
