@@ -1,0 +1,33 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: psql
+spec:
+  strategy: 
+    type: Recreate
+  replicas: 1
+  selector:
+    matchLabels:
+      app: psql-app
+  template:
+    metadata:
+      labels:
+        app: psql-app
+    spec:
+      containers:
+      - name: postgres-1013
+        image: postgres:10.13
+        ports:
+        - name: psql-port
+          containerPort: 5432
+        envFrom:
+          - configMapRef:
+              name: postgres-config
+        volumeMounts:
+        - name: psql-dbstorage
+          mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: psql-dbstorage
+        persistentVolumeClaim:
+          claimName: psql-dbstorage
