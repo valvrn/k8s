@@ -1,0 +1,36 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redmine
+spec:
+  strategy: 
+    type: Recreate
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redmine-app
+  template:
+    metadata:
+      labels:
+        app: redmine-app
+    spec:
+      containers:
+      - name: redmine-411
+        image: redmine:4.1.1
+        ports:
+        - name: redmine-port
+          containerPort: 3000
+        envFrom:
+          - configMapRef:
+              name: redmine-config
+        # volumeMounts:
+        # - name: psql-dbstorage
+        #   mountPath: /var/lib/postgresql/data
+      volumes:
+      # - name: psql-dbstorage
+      #   persistentVolumeClaim:
+      #     claimName: psql-dbstorage
+      - name: secret-volume
+        secret:
+          secretName: redmine-secret
